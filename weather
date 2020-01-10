@@ -1,0 +1,17 @@
+#!/bin/bash
+
+curl -s wttr.in > weather_report.txt
+
+low=$(cat weather_report.txt | awk '{if (NR==13) print $0}' | grep -o "m\\(-\\)*[0-9]\\+" | sort | awk '{if (NR==1) print $0}' | tr -d -c 0-9)
+
+high=$(cat weather_report.txt | awk '{if (NR==13) print $0}' | grep -o "m\\(-\\)*[0-9]\\+" | sort | awk 'END {print $0}' | tr -d -c 0-9)
+
+precipitation=$(cat weather_report.txt | awk '{if (NR==16) print $0}' | grep -wo "[0-9]*%" | sort | awk 'END {print $0}')
+
+echo "☔ $precipitation · 🌞 $high · 🥶 $low"
+
+case $BLOCK_BUTTON in
+
+	1)termite --hold -e 'bash -c "cat weather_report.txt;exec bash"' ;;
+
+esac

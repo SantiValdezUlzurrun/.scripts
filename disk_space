@@ -1,0 +1,3 @@
+#!/bin/bash
+
+df -H | awk '{if(NR==4) print $3"/"$2}'
